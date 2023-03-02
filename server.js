@@ -7,13 +7,28 @@ const server = http.createServer((req, res) => {
   //SET HEADER CONTENT-TYPE
   res.setHeader("Content-Type", "text/html");
 
-  // res.write("<head><link rel='stylesheet' href='#'></head>");
-  // res.write("<p>HELLO RESPONSE</p>");
-  // res.write("<p>HELLO AGAIN</p>");
-  // res.end();
+  let path = "./views/";
+  switch (req.url) {
+    case "/":
+      path += "index.html";
+      res.statusCode = 200;
+      break;
+    case "/about":
+      path += "about.html";
+      res.statusCode = 200;
+      break;
+    case "/about-me":
+      res.setHeader("Location", "/about");
+      res.statusCode = 301;
+      res.end();
+    default:
+      path += "404.html";
+      res.statusCode = 404;
+      break;
+  }
 
   //SEND A HTML FILE
-  fs.readFile("./views/index.html", (err, data) => {
+  fs.readFile(path, (err, data) => {
     if (err) {
       console.log(err);
     } else {
