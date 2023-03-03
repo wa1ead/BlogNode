@@ -1,23 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>node.Js | <%= title %></title>
-  </head>
+  <%- include('./partials/header.ejs') %>
   <body>
-    <nav>
-      <div class="'site-title">
-        <a href="/"><h1>BLOG NODE</h1></a>
-        <p>WELCOME TO THE VIEW</p>
-      </div>
-      <ul>
-        <li><a href="/"> HOME </a></li>
-        <li><a href="/about"> ABOUT </a></li>
-        <li><a href="/blogs/create"> NEW BLOG </a></li>
-      </ul>
-    </nav>
+    <%- include('./partials/nav.ejs') %>
     <div class="create-blog content">
       <form>
         <label for="title">BLOG TITLE: </label>
@@ -30,4 +15,5 @@
       </form>
     </div>
   </body>
+  <%- include('./partials/footer.ejs') %>
 </html>
