@@ -3,23 +3,30 @@ const express = require("express");
 //EXPRESS APP
 const app = express();
 
+//REGISTER VIEW ENGINE
+app.set("view engine", "ejs");
+
 //LISTEN FOR REQUESTS
 app.listen(3000);
 
 app.get("/", (req, res) => {
-  res.sendFile("./views/index.html", { root: __dirname });
+  const blogs = [
+    { title: "MAN VS AI", snippet: "CHATGPT AND MORE...." },
+    { title: "WORLD MACHINE", snippet: "ROBOTS AND MORE...." },
+    { title: "CREATIVITY END", snippet: "SUBJECT AND MORE...." },
+  ];
+  res.render("index", { title: "HOME", blogs });
 });
 
 app.get("/about", (req, res) => {
-  res.sendFile("./views/about.html", { root: __dirname });
+  res.render("about", { title: "ABOUT" });
 });
 
-//REDIRECTS
-app.get("/about-me", (req, res) => {
-  res.redirect("/about");
+app.get("/blogs/create", (req, res) => {
+  res.render("create", { title: "CREATE" });
 });
 
-//404 PAGE (ALWAYS IN THE BOTTOM)
+//ERROR PAGE (ALWAYS IN THE BOTTOM)
 app.use((req, res) => {
-  res.status(404).sendFile("./views/404.html", { root: __dirname });
+  res.status(404).render("404", { title: "404" });
 });
