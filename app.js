@@ -25,54 +25,25 @@ app.use(morgan("dev"));
 //MIDDLEWARE & STATIC FILES
 app.use(express.static("public"));
 
-//MONGOOSE & MONGO SANDBOX ROUTES
-app.get("/add-blog", (req, res) => {
-  const blog = new Blog({
-    title: "my blog",
-    snippet: "about my blog",
-    body: "moore about blog...",
-  });
-
-  blog
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/all-blogs", (req, res) => {
-  Blog.find()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.get("/single-blog", (req, res) => {
-  Blog.findById("64033bf31ba6a01032589df4").then((result) => {
-    res.send(result).catch((err) => {
-      console.log(err);
-    });
-  });
-});
-
 //ROUTES
 app.get("/", (req, res) => {
-  const blogs = [
-    { title: "MAN VS AI", snippet: "CHATGPT AND MORE...." },
-    { title: "WORLD MACHINE", snippet: "ROBOTS AND MORE...." },
-    { title: "CREATIVITY END", snippet: "SUBJECT AND MORE...." },
-  ];
-  res.render("index", { title: "HOME", blogs });
+  res.redirect("/blogs");
 });
 
 app.get("/about", (req, res) => {
   res.render("about", { title: "ABOUT" });
+});
+
+//BLOG ROUTES
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .sort({ createdAt: -1 })
+    .then((result) => {
+      res.render("index", { title: "ALL BLOGS", blogs: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/blogs/create", (req, res) => {
