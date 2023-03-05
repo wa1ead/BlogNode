@@ -24,6 +24,7 @@ app.use(morgan("dev"));
 
 //MIDDLEWARE & STATIC FILES
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 //ROUTES
 app.get("/", (req, res) => {
@@ -40,6 +41,44 @@ app.get("/blogs", (req, res) => {
     .sort({ createdAt: -1 })
     .then((result) => {
       res.render("index", { title: "ALL BLOGS", blogs: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//POST
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+
+  blog
+    .save()
+    .then((result) => {
+      res.redirect("/blogs");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//GET ID
+app.get("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findById(id)
+    .then((result) => {
+      res.render("details", { title: "BLOG DETAILS", blog: result });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//DELETE
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/blogs" });
     })
     .catch((err) => {
       console.log(err);
